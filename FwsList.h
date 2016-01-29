@@ -33,8 +33,10 @@
 
     void            FwsListAddInicio ( FwsNode * nodoEntrada, FwsList * listaEntrada ){
 
-        //conectar el nodo entrada con el el primer elemento de la lista
-        FwsNodeCnctNodo(nodoEntrada, listaEntrada->listaInicio );
+        if ( listaEntrada->listaInicio )
+            //conectar el nodo entrada con el el primer elemento de la lista
+            FwsNodeCnctNodoIn(nodoEntrada, listaEntrada->listaInicio );
+
         listaEntrada->listaInicio = nodoEntrada;
         listaEntrada->dims++;
     }
@@ -44,13 +46,17 @@
         // recorrer toda la lista hasta llegar al final y conectar con el ulimo nodo
         FwsNode * nodoAux = listaEntrada->listaInicio;
 
-        if ( listaEntrada->listaInicio )
+        if ( !listaEntrada->listaInicio )
             FwsListAddInicio(nodoEntrada,listaEntrada->listaInicio);
         else
         {
-            while (nodoAux->nodeSiguiente)
+            while (nodoAux->nodeSiguiente != NULL)
                 nodoAux = nodoAux->nodeSiguiente;
-            FwsNodeCnctNodo(nodoEntrada,nodoAux);
+
+            nodoAux->nodeSiguiente = nodoEntrada;
+            nodoEntrada->nodoAnterior = nodoAux;
+
+            FwsNodeCnctNodoFn(nodoEntrada,nodoAux);
 
         }
 
@@ -58,17 +64,27 @@
     }
 
 
+
 /************************************************************************************************/
 /******************************** funciones para crear y agregar nd *****************************/
 /************************************************************************************************/
 
-    void            FwsListPrintInt  ( FwsList * listaEntrada ){
+    void            FwsListPrintInt  ( FwsList * listaEntrada, int caso ){
         FwsNode * nodoAux = listaEntrada->listaInicio;
 
         while(nodoAux){
-            printf(" %d ->", (int) *nodoAux->nodeValue);
+
+            switch (caso){
+
+                case 1:  printf(" %d ->", *( (int*) nodoAux->nodeValue )); break;
+                case 2:  printf(" %f ->", *( (float*) nodoAux->nodeValue )); break;
+                case 3:  printf(" %c ->", *( (char*) nodoAux->nodeValue )); break;
+                case 4:  printf(" %s ->", *( (char*) nodoAux->nodeValue )); break;
+
+            }
             nodoAux = nodoAux->nodeSiguiente;
         }
+        listaEntrada->dims++;
     }
 
 #endif // FWSLIST_H

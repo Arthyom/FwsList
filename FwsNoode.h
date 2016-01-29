@@ -25,7 +25,7 @@
     /**************************** prototipo y declaracion fngnrc ****************************/
     /****************************************************************************************/
 
-    FwsNode *    FwNodeCrearNodo ( void * nodoValue ){
+    FwsNode *    FwsNodeCrearNodo ( void * nodoValue ){
 
         FwsNode * nuevoNodo = (FwsNode*) malloc(sizeof(FwsNode));
 
@@ -38,18 +38,23 @@
 
     }
 
-    void    *    FwsNodeVistNodo ( FwsNode * nodoVisitar ){
+    void    *    FwsNodeVistNodo   ( FwsNode * nodoVisitar ){
 
         nodoVisitar->nodoEstado = 1;
 
     }
 
-    void    *    FwsNodeCnctNodo ( FwsNode * nodoActual, FwsNode * nodoSiguiente ){
+    void    *    FwsNodeCnctNodoIn ( FwsNode * nodoActual, FwsNode * nodoSiguiente ){
         // conectar al siguiente del actual con el siguiente
         nodoActual->nodeSiguiente = nodoSiguiente;
 
         // y al anterior del siguiente con el actual
         nodoSiguiente->nodoAnterior = nodoActual;
+    }
+
+    void    *    FwsNodeCnctNodoFn ( FwsNode * nodoEntrada, FwsNode * nodoAnterior ){
+       nodoAnterior->nodeSiguiente = nodoEntrada;
+       nodoEntrada->nodoAnterior = nodoEntrada;
     }
 
 
